@@ -1,6 +1,6 @@
 package com.fastcampus.newboardproject.controller;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -91,4 +91,19 @@ public class DataRestTest {
         //  내용 검사는 hal+JSON이므로 MediaType.APPLICATION_JSON이 아니라 직접 입력해줌
 
     }
+
+    @DisplayName("[api] 회원 관련 API 는 일체 제공하지 않는다.")
+    @Test
+    void givenNothing_whenRequestingUserAccounts_thenThrowsException() throws Exception {
+        // Given
+
+        // When & Then
+        mvc.perform(get("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(post("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(put("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(patch("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(delete("/api/userAccounts")).andExpect(status().isNotFound());
+        mvc.perform(head("/api/userAccounts")).andExpect(status().isNotFound());
+    }
+
 }
