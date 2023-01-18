@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
@@ -16,10 +17,9 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.ToString.Exclude;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
     @Index(columnList = "title"),
     @Index(columnList = "hashtag"),
@@ -34,32 +34,38 @@ public class Article extends AuditingFields {
     private Long id;
 
     @Setter
-    @Column(nullable = false)
-    private String title;  // 제목
+    @ManyToOne(optional = false)
+    private UserAccount userAccount; // 유저 정보 (ID)
 
+    @Setter
+    @Column(nullable = false)
+    private String title; // 제목
     @Setter
     @Column(nullable = false, length = 10000)
-    private String content;   //
+    private String content; // 본문
 
     @Setter
-    private String hashtag;   // 해시태그
+    private String hashtag; // 해시태그
 
-    @OrderBy("id")
+    @ToString.Exclude
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    @Exclude
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
+
 
     protected Article() {
     }
 
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content,
+        String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
     @Override
@@ -67,10 +73,9 @@ public class Article extends AuditingFields {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Article article)) {
             return false;
         }
-        Article article = (Article) o;
         return id != null && id.equals(article.id);
     }
 
@@ -78,4 +83,5 @@ public class Article extends AuditingFields {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

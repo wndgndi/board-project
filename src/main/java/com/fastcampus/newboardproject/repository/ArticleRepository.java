@@ -3,8 +3,9 @@ package com.fastcampus.newboardproject.repository;
 import com.fastcampus.newboardproject.domain.Article;
 import com.fastcampus.newboardproject.domain.QArticle;
 import com.querydsl.core.types.dsl.DateTimeExpression;
-import com.querydsl.core.types.dsl.SimpleExpression;
 import com.querydsl.core.types.dsl.StringExpression;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
@@ -20,11 +21,13 @@ public interface ArticleRepository extends
     // 기본적인 검색 기능 외에 원하는 검색 기능을 만들기 위해 사용
 {
 
+    Page<Article> findByTitle(String title, Pageable pageable);
+
     @Override
     default void customize(QuerydslBindings bindings, QArticle root) {
         bindings.excludeUnlistedProperties(true);
         // excludeUnlistedProperties를 사용해 listing을 하지 않은 property를 검색에서 제외시킨다.
-        bindings.including(root.title, root.content ,root.hashtag, root.createdAt, root.createdBy);
+        bindings.including(root.title, root.content, root.hashtag, root.createdAt, root.createdBy);
         // including을 사용해 원하는 필드에 대해서 검색이 가능하게 함
 //        bindings.bind(root.title).first(StringExpression::likeIgnoreCase);
         // like '${v}'
