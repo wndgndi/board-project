@@ -29,7 +29,7 @@ public class ArticleComment extends AuditingFields {
 
     @Setter
     @ManyToOne(optional = false)
-    private Article article;   // 게시글 (ID)
+    private Article article; // 게시글 (ID)
 
     @Setter
     @ManyToOne(optional = false)
@@ -37,7 +37,8 @@ public class ArticleComment extends AuditingFields {
 
     @Setter
     @Column(nullable = false, length = 500)
-    private String content;   // 본문
+    private String content; // 본문
+
 
     protected ArticleComment() {}
 
@@ -56,10 +57,9 @@ public class ArticleComment extends AuditingFields {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof ArticleComment that)) {
             return false;
         }
-        ArticleComment that = (ArticleComment) o;
         return id != null && id.equals(that.id);
     }
 
@@ -67,4 +67,5 @@ public class ArticleComment extends AuditingFields {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
