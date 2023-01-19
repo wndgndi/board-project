@@ -36,10 +36,11 @@ public class Article extends AuditingFields {
     @Setter
     @ManyToOne(optional = false)
     private UserAccount userAccount; // 유저 정보 (ID)
-
+  
     @Setter
     @Column(nullable = false)
     private String title; // 제목
+    
     @Setter
     @Column(nullable = false, length = 10000)
     private String content; // 본문
@@ -63,8 +64,7 @@ public class Article extends AuditingFields {
         this.hashtag = hashtag;
     }
 
-    public static Article of(UserAccount userAccount, String title, String content,
-        String hashtag) {
+public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
         return new Article(userAccount, title, content, hashtag);
     }
 
