@@ -166,13 +166,27 @@ class ArticleServiceTest {
         then(articleRepository).should().deleteById(articleId);
     }
 
+    @DisplayName("게시글 수를 조회하면, 게시글 수를 반환한다")
+    @Test
+    void givenNothing_whenCountingArticles_thenReturnsArticleCount() {
+        // Given
+        long expected = 0L;
+        given(articleRepository.count()).willReturn(expected);
+
+        // When
+        long actual = sut.getArticleCount();
+
+        // Then
+        assertThat(actual).isEqualTo(expected);
+        then(articleRepository).should().count();
+    }
 
     private UserAccount createUserAccount() {
         return UserAccount.of(
-            "uno",
+            "wndgn",
             "password",
-            "uno@email.com",
-            "Uno",
+            "wndgn@email.com",
+            "wndgn",
             null
         );
     }
@@ -197,23 +211,23 @@ class ArticleServiceTest {
             content,
             hashtag,
             LocalDateTime.now(),
-            "Uno",
+            "wndgn",
             LocalDateTime.now(),
-            "Uno");
+            "wndgn");
     }
 
     private UserAccountDto createUserAccountDto() {
         return UserAccountDto.of(
             1L,
-            "uno",
+            "wndgn",
             "password",
-            "uno@mail.com",
-            "Uno",
+            "wndgn@mail.com",
+            "wndgn",
             "This is memo",
             LocalDateTime.now(),
-            "uno",
+            "wndgn",
             LocalDateTime.now(),
-            "uno"
+            "wndgn"
         );
     }
 
