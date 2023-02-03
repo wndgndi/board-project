@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
@@ -35,6 +36,7 @@ public class Article extends AuditingFields {
 
     @Setter
     @ManyToOne(optional = false)
+    @JoinColumn(name = "userId")
     private UserAccount userAccount; // 유저 정보 (ID)
   
     @Setter
@@ -64,7 +66,7 @@ public class Article extends AuditingFields {
         this.hashtag = hashtag;
     }
 
-public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
         return new Article(userAccount, title, content, hashtag);
     }
 
