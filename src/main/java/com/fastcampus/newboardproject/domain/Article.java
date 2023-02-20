@@ -75,10 +75,8 @@ public class Article extends AuditingFields {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Article article)) {
-            return false;
-        }
-        return id != null && id.equals(article.id);
+        if (!(o instanceof Article that)) return false;
+        return id != null && id.equals(that.getId());
     }
 
     @Override

@@ -62,7 +62,7 @@ public class ArticleComment extends AuditingFields {
         if (!(o instanceof ArticleComment that)) {
             return false;
         }
-        return id != null && id.equals(that.id);
+        return id != null && id.equals(that.getId());
     }
 
     @Override
