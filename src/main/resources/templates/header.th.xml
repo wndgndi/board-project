@@ -2,4 +2,7 @@
 <thlogic>
   <attr sel="#home" th:href="@{/}" />
   <attr sel="#hashtag" th:href="@{/articles/search-hashtag}" />
+  <attr sel="#username" sec:authorize="${#authorization?.expression('isAuthenticated()')}" sec:authentication="name" />
+  <attr sel="#login" sec:authorize="!${#authorization?.expression('isAuthenticated()')}" th:href="@{/login}" />
+  <attr sel="#logout" sec:authorize="${#authorization?.expression('isAuthenticated()')}" th:href="@{/logout}" />
 </thlogic>
