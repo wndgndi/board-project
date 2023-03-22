@@ -2,7 +2,6 @@ package com.fastcampus.newboardproject.controller;
 
 import com.fastcampus.newboardproject.domain.constant.FormStatus;
 import com.fastcampus.newboardproject.domain.constant.SearchType;
-import com.fastcampus.newboardproject.dto.UserAccountDto;
 import com.fastcampus.newboardproject.dto.security.BoardPrincipal;
 import com.fastcampus.newboardproject.request.ArticleRequest;
 import com.fastcampus.newboardproject.response.ArticleResponse;
@@ -14,10 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,13 +35,11 @@ public class ArticleController {
     public String articles(
         @RequestParam(required = false) SearchType searchType,
         @RequestParam(required = false) String searchValue,
-        @PageableDefault(size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable,
+        @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
         ModelMap map
     ) {
-        Page<ArticleResponse> articles = articleService.searchArticles(searchType, searchValue,
-            pageable).map(ArticleResponse::from);
-        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(
-            pageable.getPageNumber(), articles.getTotalPages());
+        Page<ArticleResponse> articles = articleService.searchArticles(searchType, searchValue, pageable).map(ArticleResponse::from);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
 
         map.addAttribute("articles", articles);
         map.addAttribute("paginationBarNumbers", barNumbers);
@@ -55,12 +50,12 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String article(@PathVariable Long articleId, ModelMap map) {
-        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(
-            articleService.getArticleWithComments(articleId));
+        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
 
         map.addAttribute("article", article);
-        map.addAttribute("articleComments", article.articleCommentsResponses());
+        map.addAttribute("articleComments", article.articleCommentsResponse());
         map.addAttribute("totalCount", articleService.getArticleCount());
+
         return "articles/detail";
     }
 
@@ -70,10 +65,8 @@ public class ArticleController {
         @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
         ModelMap map
     ) {
-        Page<ArticleResponse> articles = articleService.searchArticlesViaHashtag(searchValue,
-            pageable).map(ArticleResponse::from);
-        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(
-            pageable.getPageNumber(), articles.getTotalPages());
+        Page<ArticleResponse> articles = articleService.searchArticlesViaHashtag(searchValue, pageable).map(ArticleResponse::from);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
         List<String> hashtags = articleService.getHashtags();
 
         map.addAttribute("articles", articles);
@@ -91,7 +84,7 @@ public class ArticleController {
         return "articles/form";
     }
 
-    @PostMapping("/form")
+    @PostMapping ("/form")
     public String postNewArticle(
         @AuthenticationPrincipal BoardPrincipal boardPrincipal,
         ArticleRequest articleRequest
@@ -111,7 +104,7 @@ public class ArticleController {
         return "articles/form";
     }
 
-    @PostMapping("/{articleId}/form")
+    @PostMapping ("/{articleId}/form")
     public String updateArticle(
         @PathVariable Long articleId,
         @AuthenticationPrincipal BoardPrincipal boardPrincipal,
@@ -122,7 +115,7 @@ public class ArticleController {
         return "redirect:/articles/" + articleId;
     }
 
-    @PostMapping("/{articleId}/delete")
+    @PostMapping ("/{articleId}/delete")
     public String deleteArticle(
         @PathVariable Long articleId,
         @AuthenticationPrincipal BoardPrincipal boardPrincipal

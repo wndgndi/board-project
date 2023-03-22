@@ -1,6 +1,5 @@
 package com.fastcampus.newboardproject.config;
 
-import com.fastcampus.newboardproject.domain.UserAccount;
 import com.fastcampus.newboardproject.dto.UserAccountDto;
 import com.fastcampus.newboardproject.dto.security.BoardPrincipal;
 import com.fastcampus.newboardproject.repository.UserAccountRepository;
@@ -9,8 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
@@ -33,8 +30,7 @@ public class SecurityConfig {
                 ).permitAll()
                 .anyRequest().authenticated()
             )
-            .formLogin()
-            .and()
+            .formLogin().and()
             .logout()
             .logoutSuccessUrl("/")
             .and()

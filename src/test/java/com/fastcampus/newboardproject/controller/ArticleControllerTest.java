@@ -373,9 +373,9 @@ class ArticleControllerTest {
             "content",
             "#java",
             LocalDateTime.now(),
-            "uno",
+            "wndgn",
             LocalDateTime.now(),
-            "uno"
+            "wndgn"
         );
     }
 
