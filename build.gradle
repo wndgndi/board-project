@@ -26,7 +26,7 @@ dependencies {
 	implementation 'org.springframework.data:spring-data-rest-hal-explorer'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	compileOnly 'org.projectlombok:lombok'
@@ -43,9 +43,9 @@ dependencies {
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
 	// queryDSL JPAAnnotationProcessor 사용 지정
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-	// java.lang.NoClassDefFoundError (javax.annotation.Generated) 대응 코드
+	// java.lang.NoClassDefFoundError (jakarta.annotation.Generated) 대응 코드
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
-	// java.lang.NoClassDefFoundError (javax.annotation.Entity) 대응 코드}
+	// java.lang.NoClassDefFoundError (jakarta.annotation.Entity) 대응 코드
 }
 
 tasks.named('test') {
